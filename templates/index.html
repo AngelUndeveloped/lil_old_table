@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>CRUD App with htmx</title>
+    <script src="https://unpkg.com/htmx.org@1.6.1"></script>
+</head>
+<body>
+    <h1>Items</h1>
+    <div hx-get="/items" hx-trigger="load" hx-target="#items-list">
+        <ul id="items-list">
+            {% for item in items %}
+                <li id="item-{{ item.id }}">
+                    <span>{{ item.name }}: {{ item.description }}</span>
+                    <button hx-get="/items/{{ item.id }}/edit">Edit</button>
+                    <button hx-delete="/items/{{ item.id }}" hx-target="#item-{{ item.id }}" hx-swap="outerHTML">Delete</button>
+                </li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <h2>Add Item</h2>
+    <form hx-post="/items" hx-trigger="submit" hx-target="#items-list">
+        <input type="text" name="name" placeholder="Name" required>
+        <input type="text" name="description" placeholder="Description" required>
+        <button type="submit">Add</button>
+    </form>
+
+    <script>
+        document.addEventListener('htmx:afterSwap', (e) => {
+            if (e.detail.elt.tagName === 'FORM' && e.detail.xhr.status === 200) {
+                e.detail.elt.reset();
+            }
+        });
+    </script>
+</body>
+</html>
