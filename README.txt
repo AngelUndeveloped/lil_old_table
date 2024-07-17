@@ -1,5 +1,8 @@
 README.txt
 
+I am not bothering to remove "those" files for now.
+
+
 patient_id will be an 8-byte int.
 INTEGER Value Ranges
 Size	Signed Values	Unsigned Values
